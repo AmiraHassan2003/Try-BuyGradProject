@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/add-product.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/holder.js" defer></script>
     <title>Add A New Product</title>
 </head>
 
@@ -14,16 +16,21 @@
         <form action method="post">
             <fieldset class="holder">
                 <div class="image-upload" onclick="document.getElementById('product_img').click();">
-                    <span class="clothing-icon">👕</span>
-                    <img id="previewImage" alt="Product Image Preview" download>
+                    <span class="clothing-icon" id="clothingIcon">👕</span>
+                    <img id="previewImage" alt="Product Image Preview">
                 </div>
                 <input type="file" id="product_img" name="product_img" accept="image/*" hidden>
+
                 <label for="product_name"> Name:
                     <input type="text" name="product_name" id="product_name" placeholder="Name...">
                 </label>
-                <label for="product_price"> Price:
-                    <input type="number" name="product_price" id="product_price" placeholder="Price...">
+                <label for="mainprice"> Price:
+                    <input type="number" name="mainprice" id="mainprice" placeholder="Price...">
                 </label>
+                <label for="discount"> Discount:
+                    <input type="number" name="discount" id="discount" placeholder="Discount...">
+                </label>
+
                 <label for="product_quantity"> Amount:
                     <input type="number" name="product_quantity" id="product_quantity" placeholder="Quantity...">
                 </label>
@@ -38,16 +45,101 @@
                     <option value selected>Select product category</option>
                     <option value="1">Men</option>
                     <option value="2">Women</option>
-                    <option value="3">Kids</option>
                 </select>
             </label>
-            </fieldset>
+
+            <h1> Images</h1>
+                <h3>Image_1</h3>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="file"  id="image2" name="image1"  data-error="Please upload image">
+                        <div class="help-block with-errors"></div>
+                    </div> 
+                </div>
+                <h3>Image_2</h3>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="file"  id="image3" name="image2" data-error="Please upload image">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+            
+        </fieldset>
+            
             <div class="form-btn">
-                <input type="submit" value="Add" class="submit-btn">
+                <input type="submit" id="submit" value="Add" class="submit-btn">
                 <input type="reset" value="Empty" class="submit-btn" onclick="return confirm('Are you sure you want to empty the form?');">
             </div>
         </form>
     </div>
 
 </body>
+
+
+
+<script>
+             
+    function goToPage() {
+        window.location.href = "admin-home.html"; 
+    }
+
+    document.getElementById('product_img').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const previewImage = document.getElementById('previewImage');
+        const icon = document.getElementById('clothingIcon');
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.style.display = 'block'; // show image
+                icon.style.display = 'none'; // hide icon
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    $(document).ready(function() {
+
+    console.log("hello");
+    $('#submit').click(function(e) {
+        e.preventDefault()
+        console.log("Button clicked"); 
+        var url = "http://localhost:8080/Admin/AddProduct";
+        var formData = {
+        p_name : $("#product_name").val(),
+        p_description : $("#product_description").val(),
+        category: $("#dropdown").val(),
+        mainprice : $("#mainprice").val(),
+        discount : $("#discount").val(),  // ✔ fixed spelling
+        price : mainprice - (discount /100),
+        stock_quantity : $("#product_quantity").val(),
+        image1 : $("#product_img").val().replace(/C:\\fakepath\\/, ''),
+        image2 : $("#image2").val().replace(/C:\\fakepath\\/, ''),
+        image3 : $("#image3").val().replace(/C:\\fakepath\\/, ''),
+    };
+
+        console.log("Sending data:", JSON.stringify(formData));
+
+        $.ajax({
+            url: url,
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            dataType: "json",
+            headers:getAuthHeaders(),
+            success: function() {
+                console.log("Success function called");
+                window.location.href = "admin-home.html";},
+
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log("Error:", textStatus, errorThrown);
+                }
+                });
+            });
+        });
+</script>
+                                
+
+
 </html>
