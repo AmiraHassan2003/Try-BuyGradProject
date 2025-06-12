@@ -36,8 +36,8 @@
             <label for="categoryFilter">Filter by Category:</label>
             <select id="categoryFilter">
                 <option value="all">All</option>
-                <option value="men">Men</option>
-                <option value="women">Women</option>
+                <option value="men" class="category-link" data-category="Men">Men</option>
+                <option value="women" class="category-link" data-category="Women">Women</option>
             </select>
         </div>
 
@@ -93,3 +93,159 @@
 </body>
 
 </html>
+
+
+
+
+<script>
+    let allProducts = []; 
+    $(document).ready(function(){
+
+        $('#search-form').on('submit', function(e) {
+            e.preventDefault();
+            const query = $('#search-input').val().toLowerCase().trim();
+            
+            const filteredProducts = allProducts.filter(product =>
+                product.pName.toLowerCase().includes(query)
+            );
+
+            displayProducts(filteredProducts);
+        });
+
+    const selectedCategory = localStorage.getItem('categoryName') || '';
+    localStorage.removeItem('categoryName');
+
+    $.ajax({
+        url: "http://localhost:8080/User/getallproducts",
+        type: "GET",
+        headers: getAuthHeaders(),
+        success: function(products){
+            allProducts = products;
+
+            if (selectedCategory) {
+                const filtered = allProducts.filter(p => p.category === selectedCategory);
+                displayProducts(filtered, selectedCategory);
+
+                $(`.category-link[data-category="${selectedCategory}"]`).addClass("active");
+            } else {
+                displayProducts(allProducts);
+            }
+        },
+        error: function(xhr, status, error){
+            console.log("Error in get products: ", error);
+        }
+    });
+
+    // Category filter on click
+    $(document).on('click', '.category-link', function(e){
+        e.preventDefault();
+        const category = $(this).data("category");
+
+        $(".category-link").removeClass("active");
+        $(this).addClass("active");
+
+        const filteredProducts = allProducts.filter(product => product.category === category);
+        displayProducts(filteredProducts);
+    });
+
+    // Add to Cart
+    $(document).on('click', '.add-to-cart', function(e){
+        e.preventDefault();
+        const productId = $(this).data("product-id");
+        console.log(productId)
+        var s ="L"
+       $.ajax({
+        url: `http://localhost:8080/Car/add?productId=${productId}&quantity=1&size=${s}`,
+         type: "POST",
+        headers: getAuthHeaders(),
+            success: function(ProductTocart) {
+                console.log("Product added to cart: ", ProductTocart);
+                },
+            error: function(xhr, status, error){
+                    console.log("Error in add to cart: ", error);
+            }
+        });
+    });
+});
+
+
+function displayProducts(products){
+    let Featured = '';
+    let two='';
+    // document.getElementById("FeaturedblockId").style.height = "100%";
+
+    products.forEach(product => {
+        let priceHTML = '';
+        if (product.mainprice == product.price) {
+            priceHTML = `<h5>$ ${product.price}</h5>`;
+        } else {
+            priceHTML = `
+                <h6><del>$ ${product.mainprice}</del></h6>
+                <h5>$ ${product.price}</h5>
+            `;
+        }
+
+        Featured += `
+         <div class="list-view-box">
+                      <div class="row">
+                          <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                              <div class="products-single fix">
+                                  <div class="box-img-hover">
+                                      <img src="images/${product.image1}" class="img-fluid" alt="Image">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-6 col-md-6 col-lg-8 col-xl-8">
+                              <div class="why-text full-width">
+                                  <h4>${product.pName}</h4>
+                                  <h5><del>$${product.mainprice}</del> $${product.price}</h5>
+                                  <p>${product.pDescription}</p>
+                                  <a class="btn hvr-hover" href="javascript:setId(${product.id});">View</a>
+                                  <a class="btn hvr-hover" href="#" data-product-id="${product.id}">Add to Cart</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                     
+                 `;
+                 two +=`
+                 <div class="col-lg-3 col-md-6 special-grid best-seller">
+                         <div class="products-single fix">
+                             <div class="box-img-hover">
+                                 <img src="images/${product.image1}" class="img-fluid" alt="Image">
+                                 <div class="mask-icon">
+                                 <ul>
+                                     <li><a href="javascript:setId(${product.id});" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                 </ul>
+                                <a class="cart add-to-cart" href="#" data-product-id="${product.id}">Add to Cart</a>
+                             </div>
+                             </div>
+                                 
+                             <div class="why-text">
+                                 ${priceHTML}
+                             </div>
+                         </div>
+                     </div>
+
+                 
+
+                 
+                 `;
+
+
+
+             });
+             $("#gridview").html(two);
+             $('#list-view').html(Featured);
+}
+ 
+</script>
+
+
+ <script>
+    function setId(id){
+        setProductId(id);
+        window.location.replace("http://localhost:8080/shop-detail.html");
+        console.log("id set"+ id);
+    }
+ </script>
