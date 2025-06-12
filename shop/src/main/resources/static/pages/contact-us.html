@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Try & Buy | Contact Us</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="../styles/profile.css" />
+  <link rel="stylesheet" href="../styles/checkout.css" />
+</head>
+<body>
+  <header>
+    <h1>Try & Buy</h1>
+    <nav id="main-nav">
+      <a href="/pages/home.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="/pages/checkout.html">Checkout</a>
+      <a href="my-account.html">Profile</a>
+      <button id="toggle-theme" title="Toggle Theme">
+        <i class="fa-solid fa-sun"></i>
+      </button>
+    </nav>
+    <button id="menu-toggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <h1>Contact Us</h1>
+  <div class="checkout-container">
+    <form id="contactForm">
+      <label for="fullName">Full Name</label>
+      <input type="text" id="fullName" name="name" required placeholder="Your full name" />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required placeholder="you@example.com" />
+
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" required placeholder="Enter your subject" />
+
+      <label for="msg">Message</label>
+      <textarea id="msg" name="msg" rows="4" required placeholder="Enter your message..."></textarea>
+
+      <button type="submit" class="btn-submit">Send Message</button>
+    </form>
+
+    <div class="summary-box">
+      <h3>CONTACT INFO</h3>
+      <p>It's our graduation project for Faculty of Computer and Artificial Intelligence, Major: Computer Science.</p>
+      <ul>
+        <li><p><i class="fas fa-map-marker-alt"></i> Address: Cairo, Egypt</p></li>
+        <li><p><i class="fas fa-phone-square"></i> Phone: <a href="tel:+1-888705770">+0</a></p></li>
+        <li><p><i class="fas fa-envelope"></i> Email: <a href="mailto:admin@gmail.com">admin@gmail.com</a></p></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- jQuery for AJAX -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#contactForm').on('submit', function (e) {
+        e.preventDefault();
+
+        const contactData = {
+          name: $('#fullName').val(),
+          email: $('#email').val(),
+          subject: $('#subject').val(),
+          msg: $('#msg').val()
+        };
+
+        $.ajax({
+          url: "http://localhost:8080/contact",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(contactData),
+          success: function (response) {
+            alert("Message sent successfully!");
+            $('#contactForm')[0].reset();
+          },
+          error: function () {
+            alert("Something went wrong. Please try again.");
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
