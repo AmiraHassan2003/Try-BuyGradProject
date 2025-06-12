@@ -39,11 +39,7 @@
 </head>
 
 <body>
-  <header>
-    <div class="container">
-      <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
-    </div>
-  </header>
+  <div id="header"></div>
 
 <body>
 
@@ -192,6 +188,11 @@ $(document).ready(function () {
     });
   });
 });
+
+$(function(){
+    $("#header").load("header.html")
+});
+
 </script>
 
 </body>

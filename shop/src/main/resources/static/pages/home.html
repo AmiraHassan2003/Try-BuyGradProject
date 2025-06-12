@@ -12,21 +12,7 @@
 </head>
 
 <body>
-    <header>
-        <h1>Try & Buy</h1>
-        <nav id="main-nav">
-            <a href="/pages/home.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="/pages/checkout.html">Checkout</a>
-            <a href="my-account.html">Profile</a>
-            <button id="toggle-theme" title="Toggle Theme">
-                <i class="fa-solid fa-sun"></i>
-            </button>
-        </nav>
-        <button id="menu-toggle" aria-label="Toggle Menu">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </header>
+    <div id="header"></div>
 
 
     <main>
@@ -118,5 +104,9 @@
     </footer>
 </body>
 <script src="/js/home.js"></script>
-
+<script>
+    $(function(){
+        $("#header").load("header.html")
+    });
+</script>
 </html>

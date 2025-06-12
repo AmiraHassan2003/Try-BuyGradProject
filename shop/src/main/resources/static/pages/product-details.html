@@ -14,25 +14,11 @@
 </head>
 
 <body>
-<header>
-  <h1>Try & Buy</h1>
-  <nav id="main-nav">
-    <a href="/pages/home.html">Home</a>
-    <a href="products.html">Products</a>
-    <a href="/pages/checkout.html">Checkout</a>
-    <a href="my-account.html">Profile</a>
-    <button id="toggle-theme" title="Toggle Theme">
-      <i class="fa-solid fa-sun"></i>
-    </button>
-  </nav>
-  <button id="menu-toggle" aria-label="Toggle Menu">
-    <i class="fa-solid fa-bars"></i>
-  </button>
-</header>
+<div id="header"></div>
 
 <div class="product-container">
   <div class="product-image">
-    <img src="/assets/images/TEAM.jpg" alt="Product Image">
+    <img src="" id="product-image" alt="Product Image">
   </div>
 
   <div class="product-details" id="dataproduct"></div>
@@ -344,9 +330,10 @@
     const url = `http://localhost:8080/User/getproduct?id=${id}`;
 
     function renderProduct(data) {
+        $("#product-image").attr("src", `../images/${data.image1}`);
         const productDet = `
             <h1 class="title">${data.pName}</h1>
-            <h5>${data.mainprice === data.price ? `<span>$${data.price}</span>` : `<del>$${data.mainprice}</del> <span>$${data.price}</span>`}</h5>
+            <h5>${data.mainprice === data.price ? `<span>$${data.price}</span>` : `<del>$${data.mainprice}</del>`}</h5>
             <div class="price">$${data.price}</div>
             <p class="description">${data.pDescription}</p>
             <div class="product-btn">
@@ -402,7 +389,11 @@
     });
 });
 
-                
+         
+
+    $(function(){
+        $("#header").load("header.html")
+    });
                 
 </script>
 </body>

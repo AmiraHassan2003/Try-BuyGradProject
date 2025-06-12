@@ -10,12 +10,10 @@
 </head>
 <body>
   <!-- Header -->
-  <div class="header">
-    <div class="header-container">
-      <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
-    </div>
-  </div>
-<img src="../images/"
+  <div id="header"></div>
+
+
+<img src="../images/">
   <!-- Breadcrumb -->
   <!-- <div class="all-title-box">
     <div class="container">
@@ -147,6 +145,10 @@
         },
         error: () => console.error("Failed to load orders")
       });
+    });
+
+    $(function(){
+        $("#header").load("header.html")
     });
   </script>
 </body>

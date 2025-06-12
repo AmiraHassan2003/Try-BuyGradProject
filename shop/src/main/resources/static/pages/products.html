@@ -13,21 +13,7 @@
 </head>
 
 <body>
-  <header>
-    <h1>Sharky</h1>
-    <nav id="main-nav">
-      <a href="home.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="checkout.html">Checkout</a>
-      <a href="profile.html">Profile</a>
-      <button id="toggle-theme" title="Toggle Theme">
-        <i class="fa-solid fa-sun"></i>
-      </button>
-    </nav>
-    <button id="menu-toggle" aria-label="Toggle Menu">
-      <i class="fa-solid fa-bars"></i>
-    </button>
-  </header>
+  <div id="header"></div>
 
   <main class="product-wrapper">
     <h2 class="section-title">Browse All Products</h2>
@@ -204,6 +190,10 @@
     function setProductId(id) {
       localStorage.setItem("productId", id);
     }
+
+    $(function(){
+        $("#header").load("header.html")
+    });
   </script>
 </body>
 </html>
