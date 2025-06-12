@@ -1,5 +1,7 @@
 package com.shop.shop.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,12 @@ public class ContactMessageService {
         user.setSubject(message.getSubject());
 
         return contactMessageRepository.save(user);
+    }
+    public List<ContactModel> getmessages(){
+      List<ContactModel> messages = contactMessageRepository.findAll();
+      return messages;
+    }
+    public void delete(Long id){
+      contactMessageRepository.deleteById(id);
     }
 }

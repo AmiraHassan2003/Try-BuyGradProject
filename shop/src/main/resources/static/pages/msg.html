@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles/update-product.css" />
+  <link rel="stylesheet" href="../styles/msg.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <title>Update Product</title>
+  <script src="../js/holder.js" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <header> 
+    <div class="container">
+      <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
+    </div>
+  </header>
+
+  <!-- Title Section -->
+  <!-- <div class="all-title-box">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- <h2>Messages</h2>
+          <ul class="breadcrumb">
+            <!-- <li class="breadcrumb-item"><a href="#">Messages</a></li> -->
+          <!-- </ul>
+        </div>
+      </div>
+    </div>
+  </div> --> 
+
+  <main class="container5" role="main">
+    <h1 style="margin-bottom: 24px; font-weight:700; font-size:1.8rem;">Submitted Messages</h1>
+    <table role="table">
+      <thead>
+        <tr>
+          <th class="checkbox-cell" scope="col"></th>
+          <th scope="col">Actions</th>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Subject</th>
+          <th scope="col">Message</th>
+          <th scope="col">Submitted At</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <script>
+    function logout() {
+      setToken(null);
+      window.location.replace("http://localhost:8080/login.html");
+    }
+
+    function fetchMessages() {
+      $.ajax({
+        url: "http://localhost:8080/contact/Get",
+        type: "GET",
+        headers: getAuthHeaders(),
+        dataType: "json",
+        success: function (data) {
+          const tbody = $("table tbody");
+          tbody.empty();
+
+          data.forEach(function (item) {
+            const row = `<tr>
+              <td class="checkbox-cell"></td>
+              <td class="action-btns">
+                <button class="action-btn" onclick="delsms(${item.id})" title="Delete">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+              <td>${item.id}</td>
+              <td>${item.name}</td>
+              <td>${item.email}</td>
+              <td>${item.subject}</td>
+              <td>${item.msg}</td>
+              <td>${item.submittedAt}</td>
+            </tr>`;
+            tbody.append(row);
+          });
+        },
+        error: function () {
+          window.location.replace("http://localhost:8080/authontecation.html");
+        }
+      });
+    }
+
+    function delsms(id) {
+      const url = `http://localhost:8080/contact/del?id=${id}`;
+      $.ajax({
+        url: url,
+        type: "GET",
+        headers: getAuthHeaders(),
+        success: function () {
+          console.log("Item deleted:", id);
+          fetchMessages(); // Refresh table without reload
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.error("Error deleting item:", textStatus, errorThrown);
+          console.error("Response text:", jqXHR.responseText);
+        }
+      });
+    }
+
+    // Initial load
+    $(document).ready(fetchMessages);
+  </script>
+</body>
+
+</html>

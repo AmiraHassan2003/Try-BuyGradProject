@@ -1,0 +1,155 @@
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+
+
+  /* Container */
+  .container5 {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 16px 24px 64px;
+    flex-grow: 1;
+  }
+
+
+  /* Data Table Styles */
+  table {
+    border-collapse: collapse;
+    width: 80%;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgb(0 0 0 / 0.1);
+  }
+
+  thead {
+    background: linear-gradient(90deg, #7f2589 0%, #65075e 100%);
+    color: #f1f5f9;
+    user-select: none;
+  }
+  thead th {
+    text-align: left;
+    padding: 16px 20px;
+    border-bottom: 2px solid #64748b;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f1f5f9;
+  }
+  tbody tr:hover {
+    background-color: #e0e7ff;
+    cursor: pointer;
+  }
+  tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+  }
+
+
+
+  /* Action buttons */
+  .action-btns {
+    display: flex;
+    gap: 8px;
+  }
+  .action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #475569;
+    font-size: 20px;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+  }
+  .action-btn:hover,
+  .action-btn:focus {
+    background-color: #c7d2fe;
+    color: #3730a3;
+    outline: none;
+  }
+
+  /* Responsive Layouts */
+  @media (max-width: 767px) {
+    /* Single column layout */
+
+
+    .hamburger {
+      display: block;
+      color: white;
+      background: none;
+      border: none;
+    }
+    .breadcrumb {
+      display: block;
+      margin-left: 16px;
+    }
+
+    /* Table: stack rows vertically using "card" style per record */
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+      width: 100%;
+    }
+    thead tr {
+      display: none; /* Hide header row */
+    }
+    tbody tr {
+      margin-bottom: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      padding: 16px 20px;
+    }
+    tbody td {
+      padding: 8px 0;
+      border: none;
+      position: relative;
+      padding-left: 120px;
+      font-size: 0.95rem;
+    }
+    tbody td.checkbox-cell {
+      padding-left: 8px;
+      text-align: left;
+    }
+    tbody td::before {
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      width: 100px;
+      padding-right: 10px;
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #334155;
+      transform: translateY(-50%);
+      content: attr(data-label);
+    }
+    .action-btns {
+      margin-top: 8px;
+      justify-content: flex-start;
+    }
+  }
+
+  @media (min-width: 1440px) {
+
+    table {
+      border-radius: 16px;
+    }
+    thead th {
+      font-size: 1rem;
+      padding: 20px 24px;
+    }
+    tbody td {
+      padding: 16px 24px;
+      font-size: 1rem;
+    }
+  }
