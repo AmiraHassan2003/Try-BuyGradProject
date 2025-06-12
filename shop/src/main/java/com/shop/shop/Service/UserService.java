@@ -150,7 +150,7 @@ public class UserService {
             isUpdated = true;
         }
   if (!Objects.equals(currentUser.getPicture(), user.getPicture())) {
-    currentUser.setPicture("images/"+user.getPicture());
+    currentUser.setPicture("../images/"+user.getPicture());
     isUpdated = true;
 }
 

@@ -2,67 +2,139 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="./styles/index.css">
-    <title>Join Us</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link rel="stylesheet" href="./styles/index.css" />
+  <title>Join Us</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery -->
 </head>
 
 <body>
-
-    <div class="container" id="container">
-        <div class="form-container sign-up">
-            <form >
-                <h1>Create Account</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-                <span>or use your email for registeration</span>
-                <input type="text" placeholder="Name">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <input type="password" placeholder="Confirm Password...">
-                <button class="form-btn">Sign Up</button>
-                <a class="admin-btn" href="./pages/admin-login.html" style="color: white;">Admin</a>
-            </form>
+  <div class="container" id="container">
+    <!-- Sign Up Form -->
+    <div class="form-container sign-up">
+      <form id="registerForm">
+        <h1>Create Account</h1>
+        <div class="social-icons">
+          <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-instagram"></i></a>
         </div>
-        <div class="form-container sign-in">
-            <form>
-                <h1>Sign In</h1>
-                <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-                <span>or use your email password</span>
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <a href="#">Forget Your Password?</a>
-                <button class="form-btn">Sign In</button>
-                <a class="admin-btn" href="./pages/admin-login.html" style="color: white;">Admin</a>
-            </form>
-        </div>
-        <div class="toggle-container">
-            <div class="toggle">
-                <div class="toggle-panel toggle-left">
-                    <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features</p>
-                    <button class="hidden tgl-btn" id="login">Sign In</button>
-                </div>
-                <div class="toggle-panel toggle-right">
-                    <h1>Hello, Friend!</h1>
-                    <p>Register with your personal details to use all of site features</p>
-                    <button class="hidden tgl-btn" id="register">Sign Up</button>
-                    
-                </div>
-            </div>
-        </div>
+        <span>or use your email for registration</span>
+        <input type="text" placeholder="Full Name" id="full" required />
+        <input type="text" placeholder="Username" id="username" required />
+        <input type="email" placeholder="Email" id="registerEmail" required />
+        <input type="password" placeholder="Password" id="registerPassword" required />
+        <input type="text" placeholder="Phone" id="phone" required />
+        <input type="text" placeholder="Address" id="address" required />
+        <div id="registerMessage"></div>
+        <button class="form-btn" type="submit">Sign Up</button>
+        <a class="admin-btn" href="./pages/admin-login.html" style="color: white;">Admin</a>
+      </form>
     </div>
 
-    <script src="./js/index.js"></script>
+    <!-- Sign In Form -->
+    <div class="form-container sign-in">
+      <form id="loginForm">
+        <h1>Sign In</h1>
+        <div class="social-icons">
+          <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" class="icon"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+        <span>or use your email password</span>
+        <input type="email" placeholder="Email" id="loginEmail" required />
+        <input type="password" placeholder="Password" id="loginPassword" required />
+        <a href="#">Forget Your Password?</a>
+        <button class="form-btn" type="submit">Sign In</button>
+        <a class="admin-btn" href="./pages/admin-login.html" style="color: white;">Admin</a>
+      </form>
+    </div>
+
+    <!-- Toggle Panels -->
+    <div class="toggle-container">
+      <div class="toggle">
+        <div class="toggle-panel toggle-left">
+          <h1>Welcome Back!</h1>
+          <p>Enter your personal details to use all of site features</p>
+          <button class="hidden tgl-btn" id="login" type="button">Sign In</button>
+        </div>
+        <div class="toggle-panel toggle-right">
+          <h1>Hello, Friend!</h1>
+          <p>Register with your personal details to use all of site features</p>
+          <button class="hidden tgl-btn" id="register" type="button">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Script -->
+  <script src="./js/index.js"></script>
+
+  <!-- Register Script -->
+  <script>
+    $('#registerForm').on('submit', function (e) {
+      e.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:8080/auth/register',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          fullname: $('#full').val(),
+          username: $('#username').val(),
+          email: $('#registerEmail').val(),
+          password: $('#registerPassword').val(),
+          phone: $('#phone').val(),
+          address: $('#address').val()
+        }),
+        success: function (response) {
+          $('#registerForm')[0].reset();
+          $('#registerMessage').html('<p style="color:green;">Registration successful!</p>');
+        },
+        error: function (xhr) {
+          const errorMessage = xhr.responseJSON?.message || 'Registration failed.';
+          $('#registerMessage').html('<p style="color:red;">' + errorMessage + '</p>');
+        }
+      });
+    });
+  </script>
+
+  <!-- Login Script -->
+  <script>
+    $('#loginForm').on('submit', function (event) {
+      event.preventDefault();
+
+      const formData = {
+        email: $('#loginEmail').val(),
+        password: $('#loginPassword').val()
+      };
+
+      $.ajax({
+        url: 'http://localhost:8080/auth/authenticate',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        dataType: 'json',
+        success: function (response) {
+          localStorage.setItem('token', response.token);
+          const role = response.role;
+
+          if (role === 'ROLE_USER') {
+            window.location.replace("http://localhost:8080/index.html");
+          } else if (role === 'ROLE_ADMIN') {
+            window.location.replace("http://localhost:8080/admin-home.html");
+          } else {
+            window.location.replace("http://localhost:8080/authentication.html");
+          }
+        },
+        error: function (xhr, status, error) {
+          const errorMsg = xhr.responseJSON?.message || 'Login failed.';
+          alert('Login failed: ' + errorMsg);
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
