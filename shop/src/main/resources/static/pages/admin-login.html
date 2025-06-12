@@ -1,17 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/admin-login.css">
-    <title>Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles/admin-login.css" />
+  <title>Admin Login</title>
 </head>
 <body>
-    <form class="form-container" action="admin-home.html" method="post">
-        <h1>Go As Admin</h1>
-        <input type="text" name="admin-user-name" id="admin-user-name" placeholder="User Name" required>
-        <input type="password" name="admin-password" id="admin-password" placeholder="Password" required>
-        <input type="submit" value="Submit">
-    </form>
+  <form class="form-container" id="loginForm">
+    <h1>Go As Admin</h1>
+    <input type="text" id="admin-username" placeholder="Username" required />
+    <input type="password" id="admin-password" placeholder="Password" required />
+    <input type="submit" value="Submit" />
+  </form>
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#loginForm').on('submit', function (event) {
+        event.preventDefault();
+
+        const formData = {
+          email: $('#admin-username').val(),
+          password: $('#admin-password').val()
+        };
+
+        $.ajax({
+          url: 'http://localhost:8080/auth/authenticate',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(formData),
+          dataType: 'json',
+          success: function (response) {
+            if (response && response.token && response.role) {
+              localStorage.setItem('token', response.token);
+              const role = response.role;
+
+              if (role === 'ROLE_ADMIN') {
+                window.location.replace("/pages/admin-home.html");
+              } else if (role === 'ROLE_USER') {
+                window.location.replace("/index.html");
+              } else {
+                window.location.replace("/authentication.html");
+              }
+            } else {
+              alert("Invalid response from server.");
+            }
+          },
+          error: function (xhr, status, error) {
+            const errorMsg = xhr.responseText || 'Something went wrong';
+            alert('Login failed: ' + errorMsg);
+            console.error('Error:', status, error);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
