@@ -7,6 +7,35 @@
   <link rel="stylesheet" href="../styles/update-product.css" />
   <title>Update Product</title>
   <script src="../js/holder.js" defer></script>
+<style>
+    .image-upload {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #ccc;
+      margin: 10px;
+      text-align: center;
+      vertical-align: top;
+    }
+
+    .image-upload span {
+      font-size: 40px;
+      line-height: 100px;
+      display: block;
+    }
+
+    .image-upload img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  </style>
 </head>
 
 <body>
@@ -16,131 +45,156 @@
     </div>
   </header>
 
-  <form class="form-container">
-    <aside class="sidebar">
-      <div class="image-upload" onclick="document.getElementById('image1').click();">
-        <span class="clothing-icon">👕</span>
-        <img id="uploadedImage1" alt="Product Image 1 Preview">
-      </div>
-      <input type="file" id="image1" name="image1" accept="image/*" hidden>
-    </aside>
+<body>
 
-    <aside class="sidebar">
-      <div class="image-upload" onclick="document.getElementById('image2').click();">
-        <span class="clothing-icon">👕</span>
-        <img id="uploadedImage2" alt="Product Image 2 Preview">
-      </div>
-      <input type="file" id="image2" name="image2" accept="image/*" hidden>
-    </aside>
+<form class="form-container">
+  <aside class="sidebar">
+    <!-- IMAGE 1 -->
+    <div class="image-upload" onclick="document.getElementById('image1Input').click();">
+      <span class="clothing-icon" id="clothingIcon1">👕</span>
+      <img id="image1" alt="Product Image Preview">
+    </div>
+    <input type="file" id="image1Input" name="image1" accept="image/*" hidden>
 
-    <aside class="sidebar">
-      <div class="image-upload" onclick="document.getElementById('image3').click();">
-        <span class="clothing-icon">👕</span>
-        <img id="uploadedImage3" alt="Product Image 3 Preview">
-      </div>
-      <input type="file" id="image3" name="image3" accept="image/*" hidden>
-    </aside>
+    <!-- IMAGE 2 -->
+    <div class="image-upload" onclick="document.getElementById('image2Input').click();">
+      <span class="clothing-icon" id="clothingIcon2">👕</span>
+      <img id="image2" alt="Product Image Preview">
+    </div>
+    <input type="file" id="image2Input" name="image2" accept="image/*" hidden>
 
-    <main class="content">
-      <input type="text" id="pName" placeholder="Product Name..." />
-      <input type="text" id="mainprice" placeholder="Price..." />
-      <input type="number" id="stockQuantity" placeholder="Stock..." />
-      <input type="number" id="discount" placeholder="Discount..." />
-      <input type="number" id="QS" placeholder="Quantity Sold..." />
+    <!-- IMAGE 3 -->
+    <div class="image-upload" onclick="document.getElementById('image3Input').click();">
+      <span class="clothing-icon" id="clothingIcon3">👕</span>
+      <img id="image3" alt="Product Image Preview">
+    </div>
+    <input type="file" id="image3Input" name="image3" accept="image/*" hidden>
+  </aside>
 
-      <label class="category">
-        <span>Category</span>:
-        <label><input type="radio" name="category" value="Men"> Men</label>
-        <label><input type="radio" name="category" value="Women"> Women</label>
-        <label><input type="radio" name="category" value="Kids"> Kids</label>
-      </label>
+  <main class="content">
+    <input type="text" id="pName" placeholder="Product Name..." />
+    <input type="text" id="mainprice" placeholder="Price..." />
+    <input type="number" id="stockQuantity" placeholder="Stock..." />
+    <input type="number" id="discount" placeholder="Discount..." />
+    <input type="number" id="QS" placeholder="Quantity Sold..." />
 
-      <label for="pDescription" id="desc">Description:
-        <textarea id="pDescription" placeholder="Write more details about your product..."></textarea>
-      </label>
+    <label class="category">
+      <span>Category</span>:
+      <label><input type="radio" name="category" value="Men"> Men</label>
+      <label><input type="radio" name="category" value="Women"> Women</label>
+    </label>
 
-      <div class="form-btns">
-        <input type="reset" value="Reset" />
-        <input type="button" id="update" value="Update" />
-      </div>
-    </main>
-  </form>
+    <label for="pDescription" id="desc">Description:
+      <textarea id="pDescription" placeholder="Write more details about your product..."></textarea>
+    </label>
 
-  <!-- jQuery CDN -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div class="form-btns">
+      <input type="reset" value="Reset" />
+      <input type="button" id="update" value="Update" />
+    </div>
+  </main>
+</form>
 
-  <script>
-    function logout() {
-      setToken(null);
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Image Preview Script -->
+<script>
+function setupPreview(inputId, imgId, iconId) {
+  const input = document.getElementById(inputId);
+  const img = document.getElementById(imgId);
+  const icon = document.getElementById(iconId);
+
+  input.addEventListener('change', function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        img.src = e.target.result;
+        img.style.display = 'block';
+        icon.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+// Setup previews
+setupPreview('image1Input', 'image1', 'clothingIcon1');
+setupPreview('image2Input', 'image2', 'clothingIcon2');
+setupPreview('image3Input', 'image3', 'clothingIcon3');
+</script>
+
+<!-- AJAX and Form Logic -->
+<script>
+$(document).ready(function () {
+  const id = getProductId(); // Assume you have this function
+
+  $.ajax({
+    type: "GET",
+    url: `http://localhost:8080/User/getproduct?id=${id}`,
+    headers: getAuthHeaders(), // Assume you have this function
+    success: function (data) {
+      $('#pName').val(data.pName);
+      $(`input[name="category"][value="${data.category}"]`).prop('checked', true);
+      $('#mainprice').val(data.mainprice);
+      $('#discount').val(data.discount);
+      $('#stockQuantity').val(data.stockQuantity);
+      $('#QS').val(data.quantitySold);
+      $('#pDescription').val(data.pDescription);
+
+      // Load images from server if available
+      if (data.image1) {
+        $('#image1').attr('src', "images/" + data.image1).show();
+        $('#clothingIcon1').hide();
+      }
+      if (data.image2) {
+        $('#image2').attr('src', "images/" + data.image2).show();
+        $('#clothingIcon2').hide();
+      }
+      if (data.image3) {
+        $('#image3').attr('src', "images/" + data.image3).show();
+        $('#clothingIcon3').hide();
+      }
+    },
+    error: function () {
       window.location.replace("http://localhost:8080/login.html");
     }
+  });
 
-    $(document).ready(function () {
-      const id = getProductId();
-      console.log("Fetching product with ID:", id);
+  $('#update').click(function () {
+    const formData = {
+      id: getProductId(),
+      pName: $("#pName").val(),
+      pDescription: $("#pDescription").val(),
+      category: $('input[name="category"]:checked').val(),
+      mainprice: $("#mainprice").val(),
+      discount: $("#discount").val(),
+      stockQuantity: $("#stockQuantity").val(),
+      quantitySold: $("#QS").val(),
+      image1: $("#image1Input").val().replace(/C:\\fakepath\\/, '') || '', // adjust as needed
+      image2: $("#image2Input").val().replace(/C:\\fakepath\\/, '') || '',
+      image3: $("#image3Input").val().replace(/C:\\fakepath\\/, '') || ''
+    };
 
-      $.ajax({
-        type: "GET",
-        url: `http://localhost:8080/User/getproduct?id=${id}`,
-        headers: getAuthHeaders(),
-        success: function (data) {
-          console.log("Product data loaded:", data);
-          $('#pName').val(data.pName);
-          $(`input[name="category"][value="${data.category}"]`).prop('checked', true);
-          $('#mainprice').val(data.mainprice);
-          $('#discount').val(data.discount);
-          $('#stockQuantity').val(data.stockQuantity);
-          $('#QS').val(data.quantitySold);
-          $('#pDescription').val(data.pDescription);
-          $('#uploadedImage1').attr('src', "images/" + data.image1);
-          $('#uploadedImage2').attr('src', "images/" + data.image2);
-          $('#uploadedImage3').attr('src', "images/" + data.image3);
-          setimg1(data.image1);
-          setimg2(data.image2);
-          setimg3(data.image3);
-        },
-        error: function () {
-          window.location.replace("http://localhost:8080/login.html");
-        }
-      });
-
-      $('#update').click(function () {
-        console.log("Update button clicked");
-
-        const formData = {
-          id: getProductId(),
-          pName: $("#pName").val(),
-          pDescription: $("#pDescription").val(),
-          category: $('input[name="category"]:checked').val(),
-          mainprice: $("#mainprice").val(),
-          discount: $("#discount").val(),
-          stockQuantity: $("#stockQuantity").val(),
-          quantitySold: $("#QS").val(),
-          image1: $("#image1").val().replace(/C:\\fakepath\\/, '') || getimg1(),
-          image2: $("#image2").val().replace(/C:\\fakepath\\/, '') || getimg2(),
-          image3: $("#image3").val().replace(/C:\\fakepath\\/, '') || getimg3()
-        };
-
-        $.ajax({
-          url: "http://localhost:8080/Admin/EditProduct",
-          type: "POST",
-          contentType: "application/json",
-          data: JSON.stringify(formData),
-          headers: getAuthHeaders(),
-          success: function () {
-            setimg1(null);
-            setimg2(null);
-            setimg3(null);
-            window.location.href = "admin-home.html";
-            console.log("done");
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Update failed:", textStatus, errorThrown);
-          }
-        });
-      });
+    $.ajax({
+      url: "http://localhost:8080/Admin/EditProduct",
+      type: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(formData),
+      headers: getAuthHeaders(),
+      success: function () {
+        window.location.href = "admin-home.html";
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log("Update failed:", textStatus, errorThrown);
+      }
     });
-  </script>
+  });
+});
+</script>
+
 </body>
+</html>
 
 </html>

@@ -74,10 +74,6 @@
         return { Authorization: `Bearer ${token}` }
       }
 
-      // Load nav/footer
-      $("#navPlaceholder").load("Basics/nav.html");
-      $("#mainfooterplaceholder").load("Basics/mainFooter.html");
-
       // Fetch profile
       $.ajax({
         url: `${API}/User/account`,

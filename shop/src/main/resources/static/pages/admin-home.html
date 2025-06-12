@@ -1,60 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/admin-home.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <title>Admin Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../styles/admin-home.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="../js/holder.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Admin Home</title>
 </head>
+
 <body>
-    <div class="container">
-        <aside class="sidebar">
-            <button id="toggle-theme" title="Toggle Theme">
-                <i class="fa-solid fa-sun"></i>
-            </button>
-            <div class="admin-info">
-                <img src="../assets/images/TEAM.jpg" alt="admin" title="The admin" width="100px">
-                <h2 name="admin-name" id="admin-name">Shawqy Hussien</h2>
-            </div>
-            <div class="pages">
-                <ul class="list">
-                    <li><a href="home.html">User View</a></li>
-                    <li class="dropdown">
-                        <a href="#" id="cats">Categories <i class="fas fa-caret-right" style="position: relative; left: 70px;"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="men.html">Men</a></li>
-                            <li><a href="women.html">Women</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="add-product.html" class="login-icon">Add Product</a></li>
-                    <li><a href="update-product.html" class="cart-icon"></i>Update Product</a></li>
-                </ul>
-            </div>
-            <div class="update-admin-data">
-                <a href="update-admin-data.html">Update Admin Data</a>
-            </div>
-        </aside>
-        <main class="content">
-            <div class="search">
-                <form class="search-bar">
-                    <input type="text" name="search" placeholder="Search for product..." />
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </form>
-                
-            </div>
-            <div class="products">
-                <div class="product-card">
-                    <img src="../assets/images/freepik__candid-image-photography-natural-textures-highly-r__89745.jpeg" width="100px" height="100px" alt="">
-                    <h2 name="product-name" id="product-name">Product Name</h2>
-                    <p name="product-price" id="product-price">50$</p>
-                    <a href="update-product.html"><button>Update</button></a>
-                    <button>Delete</button>
-                </div>
-            </div>
-        </main>
-    </div>
+  <div class="container">
+    <aside class="sidebar">
+      <button id="toggle-theme" title="Toggle Theme">
+        <i class="fa-solid fa-sun"></i>
+      </button>
+      <div class="admin-info">
+        <img id="profile-image" src="" alt="admin" width="100px" />
+        <h2 id="admin-name">Shawqy Hussien</h2>
+      </div>
+      <div class="pages">
+        <ul class="list">
+          <li><a href="home.html">User View</a></li>
+          <li class="dropdown">
+            <a href="#">Categories <i class="fas fa-caret-right" style="position: relative; left: 70px;"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="men.html">Men</a></li>
+              <li><a href="women.html">Women</a></li>
+            </ul>
+          </li>
+          <li><a href="add-product.html">Add Product</a></li>
+          <li><a href="update-product.html">Update Product</a></li>
+        </ul>
+      </div>
+      <div class="update-admin-data">
+        <a href="update-admin-data.html">Update Admin Data</a>
+      </div>
+    </aside>
+
+    <main class="content">
+      <div class="search">
+        <form class="search-bar" id="search-form">
+          <input type="text" id="search-input" placeholder="Search for product..." />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+      <div class="products" id="gridview">
+        <!-- Products will be dynamically inserted here -->
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let allProducts = [];
+
+    function getAuthHeaders() {
+      return {
+        Authorization: localStorage.getItem("Authorization") || ""
+      };
+    }
+
+    function display(products) {
+      $('#gridview').empty();
+
+      if (!products || products.length === 0) {
+        $('#gridview').html('<p>No products found.</p>');
+        return;
+      }
+
+      products.forEach(product => {
+        const html = `
+          <div class="product-card">
+            <img src="../images/${product.image1}" width="100" height="100" alt="${product.pName}">
+            <h2>${product.pName}</h2>
+            <p>$${product.price}</p>
+            <a href="javascript:setIdToEdit(${product.id});"><button>Update</button></a>
+            <a class="delete" href="javascript:delProduct(${product.id});"><button>Delete</button></a>
+          </div>
+        `;
+        $('#gridview').append(html);
+      });
+    }
+
+    function setIdToEdit(id) {
+      localStorage.setItem("editProductId", id); // Assuming you use this in update-product.html
+      window.location.href = "update-product.html";
+    }
+
+    function delProduct(id) {
+      $.ajax({
+        url: `http://localhost:8080/Admin/DelProduct?id=${id}`,
+        type: "POST",
+        headers: getAuthHeaders(),
+        success: function () {
+          console.log("Product deleted");
+          location.reload();
+        },
+        error: function (xhr) {
+          console.error("Delete error:", xhr.responseText);
+        }
+      });
+    }
+
+    $(document).ready(function () {
+      const API = "http://localhost:8080";
+
+      // Load Admin Profile
+      $.ajax({
+        url: `${API}/User/account`,
+        type: "GET",
+        headers: getAuthHeaders(),
+        dataType: "json",
+        success: user => {
+          $("#admin-name").text(user.fullname);
+          $("#profile-image").attr("src", `../images/${user.picture}`);
+        },
+        error: () => console.error("Failed to load user profile")
+      });
+
+      // Load Products
+      $.ajax({
+        url: `${API}/User/getallproducts`,
+        type: "GET",
+        headers: getAuthHeaders(),
+        dataType: "json",
+        success: data => {
+          allProducts = data;
+          display(allProducts);
+        },
+        error: function () {
+          console.error("Failed to load products.");
+          window.location.replace("/login.html");
+        }
+      });
+
+      // Search
+      $('#search-form').on('submit', function (e) {
+        e.preventDefault();
+        const query = $('#search-input').val().toLowerCase().trim();
+
+        if (query === "") {
+          display(allProducts);
+          return;
+        }
+
+        const filtered = allProducts.filter(product =>
+          (product.pName || "").toLowerCase().includes(query)
+        );
+
+        display(filtered);
+      });
+    });
+  </script>
 </body>
-<script src="/js/admin-home.js"></script>
 </html>

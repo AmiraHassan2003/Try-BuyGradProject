@@ -107,17 +107,17 @@
         console.log("Button clicked"); 
         var url = "http://localhost:8080/Admin/AddProduct";
         var formData = {
-        p_name : $("#product_name").val(),
-        p_description : $("#product_description").val(),
-        category: $("#dropdown").val(),
-        mainprice : $("#mainprice").val(),
-        discount : $("#discount").val(),  // ✔ fixed spelling
-        price : mainprice - (discount /100),
-        stock_quantity : $("#product_quantity").val(),
-        image1 : $("#product_img").val().replace(/C:\\fakepath\\/, ''),
-        image2 : $("#image2").val().replace(/C:\\fakepath\\/, ''),
-        image3 : $("#image3").val().replace(/C:\\fakepath\\/, ''),
-    };
+            pName : $("#product_name").val(),
+            pDescription : $("#product_description").val(),
+            category: $("#dropdown").val(),
+            mainprice : $("#mainprice").val(),
+            discount : $("#discount").val(),  // ✔ fixed spelling
+            price : mainprice - (discount /100),
+            stock_quantity : $("#product_quantity").val(),
+            image1 : $("#product_img").val().replace(/C:\\fakepath\\/, ''),
+            image2 : $("#image2").val().replace(/C:\\fakepath\\/, ''),
+            image3 : $("#image3").val().replace(/C:\\fakepath\\/, ''),
+        };
 
         console.log("Sending data:", JSON.stringify(formData));
 

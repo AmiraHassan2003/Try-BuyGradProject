@@ -1,191 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sharky | All Products</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="../styles/products.css" />
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../js/holder.js" defer></script>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharky | All Products</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/products.css" />
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../js/holder.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <h1>Sharky</h1>
-        <nav id="main-nav">
-            <a href="home.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="checkout.html">Checkout</a>
-            <a href="profile.html">Profile</a>
-            <button id="toggle-theme" title="Toggle Theme">
-                <i class="fa-solid fa-sun"></i>
-            </button>
-        </nav>
-        <button id="menu-toggle" aria-label="Toggle Menu">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </header>
+  <header>
+    <h1>Sharky</h1>
+    <nav id="main-nav">
+      <a href="home.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="profile.html">Profile</a>
+      <button id="toggle-theme" title="Toggle Theme">
+        <i class="fa-solid fa-sun"></i>
+      </button>
+    </nav>
+    <button id="menu-toggle" aria-label="Toggle Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
 
-    <main class="product-wrapper">
-        <h2 class="section-title">Browse All Products</h2>
-        <div>
-            <form action="#" id="search-form">
-                <input class="form-control" placeholder="Search here..." type="text" id="search-input">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div>
-        <div class="filter-container">
-            <label for="categoryFilter">Filter by Category:</label>
-            <select id="categoryFilter">
-                <option value="all">All</option>
-                <option value="men" class="category-link" data-category="Men">Men</option>
-                <option value="women" class="category-link" data-category="Women">Women</option>
-            </select>
-        </div>
+  <main class="product-wrapper">
+    <h2 class="section-title">Browse All Products</h2>
 
-        <div class="product-grid" id="list-view">
-            <!-- Repeat this block for each product -->
-            <!-- <div class="product-card" data-category="men">
-                <img src="https://via.placeholder.com/300x350?text=Shirt" alt="Casual Shirt">
-                <h4>Casual Shirt</h4>
-                <p>$45.00</p>
-                <div class="product-buttons">
-                    <a href="product-details.html" class="btn-primary">View</a>
-                    <button class="btn-primary add-to-cart-btn">Add to Cart</button>
-                </div>
-            </div> -->
-        </div>
-    </main>
+    <div>
+      <form action="#" id="search-form">
+        <input class="form-control" placeholder="Search here..." type="text" id="search-input">
+        <button type="submit"><i class="fa fa-search"></i></button>
+      </form>
+    </div>
 
-    <footer>
-        <p>&copy; 2025 Sharky. All rights reserved.</p>
-    </footer>
+    <div class="filter-container">
+      <label for="categoryFilter">Filter by Category:</label>
+      <select id="categoryFilter">
+        <option value="all">All</option>
+        <option value="men" class="category-link" data-category="Men">Men</option>
+        <option value="women" class="category-link" data-category="Women">Women</option>
+      </select>
+    </div>
 
-    <script src="/js/products.js"></script>
-</body>
+    <div class="product-grid" id="list-view"></div>
+  </main>
 
-</html>
+  <footer>
+    <p>&copy; 2025 Sharky. All rights reserved.</p>
+  </footer>
 
+  <script>
+    let allProducts = [];
 
+    $(document).ready(function () {
+      // Search form submit
+      $('#search-form').on('submit', function (e) {
+        e.preventDefault();
+        const query = $('#search-input').val()?.toLowerCase().trim() || "";
 
+        if (query === "") {
+          displayProducts(allProducts);
+          return;
+        }
 
-<script>
-    let allProducts = []; 
-    $(document).ready(function(){
+        const filteredProducts = allProducts.filter(product =>
+          typeof product.pName === 'string' &&
+          product.pName.toLowerCase().includes(query)
+        );
 
-        $('#search-form').on('submit', function(e) {
-            e.preventDefault();
-            const query = $('#search-input').val().toLowerCase().trim();
-            
-            const filteredProducts = allProducts.filter(product =>
-                product.pName.toLowerCase().includes(query)
-            );
+        displayProducts(filteredProducts);
+      });
 
-            displayProducts(filteredProducts);
-        });
+      // Optional: live search while typing
+      $('#search-input').on('input', function () {
+        const query = $(this).val()?.toLowerCase().trim() || "";
 
-        const selectedCategory = localStorage.getItem('categoryName') || '';
-        localStorage.removeItem('categoryName');
+        if (query === "") {
+          displayProducts(allProducts);
+          return;
+        }
+
+        const filteredProducts = allProducts.filter(product =>
+          typeof product.pName === 'string' &&
+          product.pName.toLowerCase().includes(query)
+        );
+
+        displayProducts(filteredProducts);
+      });
+
+      // Load previously selected category from localStorage
+      const selectedCategory = localStorage.getItem('categoryName') || '';
+      localStorage.removeItem('categoryName');
+
+      // Fetch products
+      $.ajax({
+        url: "http://localhost:8080/User/getallproducts",
+        type: "GET",
+        headers: getAuthHeaders(),
+        success: function (products) {
+          allProducts = products;
+          if (selectedCategory) {
+            const filtered = allProducts.filter(p => p.category === selectedCategory);
+            displayProducts(filtered);
+          } else {
+            displayProducts(allProducts);
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error("Error in get products: ", error);
+        }
+      });
+
+      // Category filter dropdown
+      $('#categoryFilter').on('change', function () {
+        const selectedOption = $(this).find('option:selected');
+        const category = selectedOption.data('category');
+
+        if (category === undefined || category === "all") {
+          displayProducts(allProducts);
+        } else {
+          const filteredProducts = allProducts.filter(product => product.category === category);
+          displayProducts(filteredProducts);
+        }
+      });
+
+      // Add to cart
+      $(document).on('click', '.add-to-cart', function (e) {
+        e.preventDefault();
+        const productId = $(this).data("product-id");
+        const size = "L"; // static size for demo
 
         $.ajax({
-            url: "http://localhost:8080/User/getallproducts",
-            type: "GET",
-            headers: getAuthHeaders(),
-            success: function(products){
-                allProducts = products;
-                console.log("allProducts", allProducts)
-                if (selectedCategory) {
-                    const filtered = allProducts.filter(p => p.category === selectedCategory);
-                    displayProducts(filtered, selectedCategory);
-
-                    // $(`.category-link[data-category="${selectedCategory}"]`).addClass("active");
-                } else {
-                    displayProducts(allProducts);
-                }
-            },
-            error: function(xhr, status, error){
-                console.log("Error in get products: ", error);
-            }
+          url: `http://localhost:8080/Car/add?productId=${productId}&quantity=1&size=${size}`,
+          type: "POST",
+          headers: getAuthHeaders(),
+          success: function (response) {
+            console.log("Product added to cart:", response);
+          },
+          error: function (xhr, status, error) {
+            console.error("Error in add to cart:", error);
+          }
         });
+      });
+    });
 
+    // Display products
+    function displayProducts(products) {
+      let html = '';
 
-        // Category filter on click
-        $(document).on('change', '#categoryFilter', function () {
-            const selectedOption = $(this).find('option:selected');
-            const category = selectedOption.data('category');
+      if (!products || products.length === 0) {
+        $('#list-view').html('<p>No products found.</p>');
+        return;
+      }
 
-            if (category === undefined || category === "all") {
-                displayProducts(allProducts); // show all if "All" selected
-            } else {
-                const filteredProducts = allProducts.filter(product => product.category === category);
-                displayProducts(filteredProducts);
-            }
-        });
+      products.forEach(product => {
+        let priceHTML = '';
 
-    // Add to Cart
-        $(document).on('click', '.add-to-cart', function(e){
-            e.preventDefault();
-            const productId = $(this).data("product-id");
-            console.log(productId)
-            var s ="L"
-            $.ajax({
-                url: `http://localhost:8080/Car/add?productId=${productId}&quantity=1&size=${s}`,
-                type: "POST",
-                headers: getAuthHeaders(),
-                    success: function(ProductTocart) {
-                        console.log("Product added to cart: ", ProductTocart);
-                        },
-                    error: function(xhr, status, error){
-                            console.log("Error in add to cart: ", error);
-                    }
-                });
-            });
-        });
-
-
-    function displayProducts(products){
-        let Featured = '';
-
-        products.forEach(product => {
-            let priceHTML = '';
-            // console.log("price",product.mainprice)
-            if ((product.mainprice == product.price) || (product.mainprice == null)) {
-                priceHTML = `<h5>$ ${product.price}</h5>`;
-            } else {
-                priceHTML = `
-                    <h6><del>$ ${product.mainprice}</del></h6>
-                    <h5>$ ${product.price}</h5>
-                `;
-            }
-
-        Featured += `
-            <div class="product-card" data-category="${product.category}">
-                <img src="../images/${product.image1}" alt="${product.pName}">
-                <h4>${product.pName}</h4>
-                <h5><del>$${product.mainprice}</del> $${product.price}</h5>
-                <p>${product.pDescription}</p>
-                <div class="product-buttons">
-                    <a href="javascript:setId(${product.id});" class="btn-primary">View</a>
-                    <button class="btn-primary add-to-cart" data-product-id="${product.id}">Add to Cart</button>
-                </div>
-            </div>
-            `
-
-
-             });
-             $('#list-view').html(Featured);
+        if (!product.mainprice || product.mainprice == product.price) {
+          priceHTML = `<h5>$ ${product.price}</h5>`;
+        } else {
+          priceHTML = `
+            <h6><del>$ ${product.mainprice}</del></h6>
+            <h5>$ ${product.price}</h5>
+          `;
         }
- 
 
-    function setId(id){
-        setProductId(id);
-        window.location.replace("http://localhost:8080/pages/product-details.html");
-        console.log("id set"+ id);
+        html += `
+          <div class="product-card" data-category="${product.category}">
+            <img src="../images/${product.image1}" alt="${product.pName}">
+            <h4>${product.pName}</h4>
+            ${priceHTML}
+            <p>${product.pDescription || ''}</p>
+            <div class="product-buttons">
+              <a href="javascript:setId(${product.id});" class="btn-primary">View</a>
+              <button class="btn-primary add-to-cart" data-product-id="${product.id}">Add to Cart</button>
+            </div>
+          </div>
+        `;
+      });
+
+      $('#list-view').html(html);
     }
-</script>
+
+    // Set ID for product details page
+    function setId(id) {
+      setProductId(id);
+      window.location.replace("http://localhost:8080/pages/product-details.html");
+    }
+
+    // Dummy function placeholder (replace with real implementation)
+    function getAuthHeaders() {
+      return {
+        "Authorization": "Bearer " + localStorage.getItem("token")
+      };
+    }
+
+    function setProductId(id) {
+      localStorage.setItem("productId", id);
+    }
+  </script>
+</body>
+</html>
