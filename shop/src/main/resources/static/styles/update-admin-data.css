@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    background-color: #c9d6ff;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* ====================================== Header ====================================== */
+
+header {
+    background: white;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    margin: auto;
+    display:flex;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.logo{
+    position:relative;
+    left: 0;
+}
+.logo a {
+    font-size: 30px;
+    font-weight: bold;
+    color: #6a11cb;
+    text-decoration: none;
+    left: 0;
+}
+
+/* ====================================== Form ====================================== */
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    text-align: center;
+    align-items: center;
+    width: 500px;
+    height: max-content;
+    max-width: 90%;
+    background: #eee;
+    padding: 30px 20px;
+    background-color: #eee;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35)
+}
+
+.change-password{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.form-container input{
+    padding: 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    outline: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.change-password input{
+    width: 49%;
+}
+
+input[type="submit"]{
+    width: 45%;
+    margin-top: 10px;
+    color: #eee;
+    background-color: #6a11cb;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;    
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+input[type="submit"]:hover{
+    background-color: #3c217a;
+    color: #ddd;
+    transform: scale(1.05);
+}
+
+.form-container h1{
+    padding: 10px;
+    margin-bottom: 10px;
+}

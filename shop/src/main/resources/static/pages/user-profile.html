@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/user-profile.css">
+    <title>My Profile</title>
+</head>
+<body>
+    <div class="header">
+        <div class="header-container">
+            <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
+        </div>
+    </div>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="admin-info">
+                <img src="../assets/images/TEAM.jpg" alt="admin" title="The admin" width="100px">
+                <h2 name="admin-name" id="admin-name">Shawqy Hussien</h2>
+            </div>
+            <div class="pages">
+                <ul class="list">
+                    <li><a href="home.html">User View</a></li>
+                    <li class="dropdown">
+                        <a href="#" id="cats">Categories <i class="fas fa-caret-right" style="position: relative; left: 70px;"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="men.html">Men</a></li>
+                            <li><a href="women.html">Women</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="add-product.html" class="login-icon">Add Product</a></li>
+                    <li><a href="update-product.html" class="cart-icon"></i>Update Product</a></li>
+                </ul>
+            </div>
+            <div class="update-admin-data">
+                <a href="update-admin-data.html">Update Admin Data</a>
+            </div>
+        </aside>
+        <main class="content">
+            <div class="search">
+                <form class="search-bar">
+                    <input type="text" name="search" placeholder="Search for product..." />
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="products">
+                <div class="product-card">
+                    <img src="../assets/images/freepik__candid-image-photography-natural-textures-highly-r__89745.jpeg" width="100px" height="100px" alt="">
+                    <h2 name="product-name" id="product-name">Product Name</h2>
+                    <p name="product-price" id="product-price">50$</p>
+                    <a href="update-product.html"><button>Update</button></a>
+                    <button>Delete</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

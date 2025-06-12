@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/update-product.css">
+    <title>Update Product</title>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
+        </div>
+    </header>
+
+    <form class="form-container" action="admin-home.html" method="post">
+        <!-- <h2>Go As Admin</h2>
+        <div class="image-upload" onclick="document.getElementById('product_img').click();">
+            <span class="clothing-icon">👕</span>
+            <img id="previewImage" alt="Product Image Preview" download>
+        </div>
+        <input type="file" id="product_img" name="product_img" accept="image/*" hidden>
+        <input type="text" name="product_name" id="product_name" placeholder="Name...">
+        <div class="product-nums">
+            <input type="text" name="product_price" id="product_price" placeholder="Price...">
+            <input type="number" name="product_quantity" id="product_quantity" placeholder="Quantity...">
+        </div>
+
+        <label class="category">
+            <span>Category</span>: &nbsp; <label for="men"><input type="radio" name="category" id="men"> Men &nbsp; </label>
+            <label for="women"><input type="radio" name="category" id="women"> Women </label>
+        </label>
+        <label for="product_description" id="desc"> Description:
+            <textarea name="product_description" id="product_description"
+                placeholder="Write more details about your product..."></textarea>
+        </label>
+        <div class="form-btns">
+            <input type="reset" value="Reset">
+            <input type="submit" value="Submet">
+        </div>  -->
+
+        <aside class="sidebar">
+            <div class="image-upload" onclick="document.getElementById('product_img').click();">
+                <span class="clothing-icon">👕</span>
+                <img id="previewImage" alt="Product Image Preview">
+            </div>
+            <input type="file" id="product_img" name="product_img" accept="image/*" hidden>
+        </aside>
+        <main class="content">
+            <input type="text" name="product_name" id="product_name" placeholder="Name...">
+            <input type="text" name="product_price" id="product_price" placeholder="Price...">
+            <input type="number" name="product_quantity" id="product_quantity" placeholder="Quantity...">
+            <label class="category">
+                <span>Category</span>: &nbsp; <label for="men"><input type="radio" name="category" id="men"> Men &nbsp;
+                </label>
+                <label for="women"><input type="radio" name="category" id="women"> Women </label>
+            </label>
+            <label for="product_description" id="desc"> Description:
+                <textarea name="product_description" id="product_description"
+                    placeholder="Write more details about your product..."></textarea>
+            </label>
+            <div class="form-btns">
+                <input type="reset" value="Reset">
+                <input type="submit" value="Submit">
+            </div>
+        </main>
+    </form>
+    </div>
+
+</body>
+
+</html>

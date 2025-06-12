@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body{
+    background-color: #c9d6ff;
+    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* ====================================== Header ====================================== */
+
+header {
+    background: white;
+    padding: 20px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    margin: auto;
+    display:flex;
+    align-items: center;
+    padding: 0 30px;
+}
+
+.logo{
+    position:relative;
+    left: 0;
+}
+.logo a {
+    font-size: 30px;
+    font-weight: bold;
+    color: #6a11cb;
+    text-decoration: none;
+    left: 0;
+}
+
+
+/* ====================================== Updating Form ====================================== */
+
+.form-container{
+    margin-top: 100px;
+    display: flex;
+    background-color: #eee;
+    width: 800px;
+    height: max-content;
+    max-width: 90%;
+}
+
+.sidebar{
+    width: 180px;
+    max-width: 35%;
+    background-color: #f8f9fa;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    color: white;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    /* padding: 20px; */
+    height: 100%;
+}
+
+input{
+    outline: none;
+    border: none;
+}
+
+.image-upload {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    width: 90%;
+    height: 150px;
+    border-radius: 15px;
+    background: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #512da8;
+}
+
+.image-upload img {
+    object-fit: cover;
+    display: none;
+}
+
+.image-upload .clothing-icon {
+    font-size: 30px;
+    color: #512da8;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+}
+
+.content{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+    padding: 20px;
+    text-align: center;
+    height: max-content;
+}
+
+.content input[type="text"], .content input[type="number"]{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#desc{
+    font-weight: bolder;
+    outline: none;
+    display: flex;
+}
+
+textarea{
+    margin: 10px;
+    width: 100%;
+    height: 150px;
+    border: 1px solid #0a0a23;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 10px;
+    border: none;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    outline: none;
+    max-width: 450px;
+    max-height: 200px;
+    min-width: 295px;
+    min-height: 200px;
+}
+
+.category {
+    margin: 15px 0;
+    display: flex;
+    gap: 62px;
+}
+
+.category label{
+    cursor: pointer;
+}
+
+.form-btns {
+    width: 100%;
+    /* display: flex; */
+    text-align: center;
+    align-items: center;
+}
+
+.form-btns input{
+    padding: 10px;
+    margin: 0px 10px;
+    width: 100px;
+    cursor: pointer;
+    background-color: #6a11cb;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.form-btns input:hover{
+    background-color: #3c217a;
+    color: #ddd;
+    transform: scale(1.05);
+
+}
+
+/* 
+.category span{
+    font-size: 18px;
+    text-decoration: underline;
+} */

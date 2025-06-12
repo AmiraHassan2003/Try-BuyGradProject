@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sharky | Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="../styles/shopping-cart.css">
+</head>
+
+<body>
+    <header>
+        <h1>Sharky</h1>
+        <nav id="main-nav">
+            <a href="/pages/home.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="/pages/checkout.html">Checkout</a>
+            <a href="profile.html">Profile</a>
+            <button id="toggle-theme" title="Toggle Theme">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </nav>
+        <button id="menu-toggle" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+    </header>
+<div class="main">
+    <h1>Your Shopping Cart</h1>
+    <div class="table-wrapper">
+        <table id="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-id="1">
+                    <td data-label="Product">
+                        <img src="https://via.placeholder.com/80x80?text=Shirt" alt="Classic Shirt" />
+                        <div>Classic Shirt</div>
+                    </td>
+                    <td data-label="Price" class="price">$50</td>
+                    <td data-label="Quantity">
+                        <div class="qty-controls">
+                            <button class="qty-button minus">-</button>
+                            <div class="qty-number">1</div>
+                            <button class="qty-button plus">+</button>
+                        </div>
+                    </td>
+                    <td data-label="Subtotal" class="subtotal">$50</td>
+                    <td data-label="Remove">
+                        <button class="remove-btn">&times;</button>
+                    </td>
+                </tr>
+                <tr data-id="2">
+                    <td data-label="Product">
+                        <img src="https://via.placeholder.com/80x80?text=Jacket" alt="Sporty Jacket" />
+                        <div>Sporty Jacket</div>
+                    </td>
+                    <td data-label="Price" class="price">$30</td>
+                    <td data-label="Quantity">
+                        <div class="qty-controls">
+                            <button class="qty-button minus">-</button>
+                            <div class="qty-number">2</div>
+                            <button class="qty-button plus">+</button>
+                        </div>
+                    </td>
+                    <td data-label="Subtotal" class="subtotal">$30</td>
+                    <td data-label="Remove">
+                        <button class="remove-btn">&times;</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="total" id="total-price">Total: $80</div>
+    <div class="actions">
+        <button class="btn" onclick="window.location.href='checkout.html'">Checkout</button>
+        <button class="btn" onclick="window.location.href='/products'">Continue Shopping</button>
+    </div>
+</div>
+    
+
+    <script src="/js/shopping-cart.js"></script>
+</body>
+
+</html>

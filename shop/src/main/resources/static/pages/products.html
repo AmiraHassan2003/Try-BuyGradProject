@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sharky | All Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles/products.css" />
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+</head>
+
+<body>
+    <header>
+        <h1>Sharky</h1>
+        <nav id="main-nav">
+            <a href="home.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="checkout.html">Checkout</a>
+            <a href="profile.html">Profile</a>
+            <button id="toggle-theme" title="Toggle Theme">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </nav>
+        <button id="menu-toggle" aria-label="Toggle Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <main class="product-wrapper">
+        <h2 class="section-title">Browse All Products</h2>
+
+        <div class="filter-container">
+            <label for="categoryFilter">Filter by Category:</label>
+            <select id="categoryFilter">
+                <option value="all">All</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+            </select>
+        </div>
+
+        <div class="product-grid">
+            <!-- Repeat this block for each product -->
+            <div class="product-card" data-category="men">
+                <img src="https://via.placeholder.com/300x350?text=Shirt" alt="Casual Shirt">
+                <h4>Casual Shirt</h4>
+                <p>$45.00</p>
+                <div class="product-buttons">
+                    <a href="product-details.html" class="btn-primary">View</a>
+                    <button class="btn-primary add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women">
+                <img src="https://via.placeholder.com/300x350?text=Dress" alt="Elegant Dress">
+                <h4>Elegant Dress</h4>
+                <p>$60.00</p>
+                <div class="product-buttons">
+                    <a href="product-details.html" class="btn-primary">View</a>
+                    <button class="btn-primary add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="men">
+                <img src="https://via.placeholder.com/300x350?text=Jacket" alt="Sport Jacket">
+                <h4>Sport Jacket</h4>
+                <p>$79.99</p>
+                <div class="product-buttons">
+                    <a href="product-details.html" class="btn-primary">View</a>
+                    <button class="btn-primary add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="women">
+                <img src="https://via.placeholder.com/300x350?text=Shoes" alt="Leather Heels">
+                <h4>Leather Heels</h4>
+                <p>$99.00</p>
+                <div class="product-buttons">
+                    <a href="product-details.html" class="btn-primary">View</a>
+                    <button class="btn-primary add-to-cart-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Sharky. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/products.js"></script>
+</body>
+
+</html>

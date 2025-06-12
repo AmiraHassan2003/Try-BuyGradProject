@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/try-on.css">
+    <script src="/js/try-on.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Side -->
+        <div class="left-side">
+            <h3>Selected Product</h3>
+            <img id="productImage" src="https://placehold.jp/80x60.png" alt="Product Image">
+
+            <div class="buttons">
+                <button onclick="document.getElementById('userImageInput').click()">Upload Your Photo</button>
+                <input type="file" id="userImageInput" style="display:none" accept="image/*"
+                    onchange="previewUserImage(this)">
+                <button onclick="applyTryOn()">Apply Try-On</button>
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="addToCart()">Add to Cart</button>
+                <button onclick="location.href='home.html'">Continue Shopping</button>
+            </div>
+        </div>
+
+        <!-- Right Side -->
+        <div class="right-side">
+            <h3>Your Image</h3>
+            <img id="userImagePreview" src="https://placehold.jp/80x60.png" alt="User Image">
+            <h3>Result</h3>
+            <img id="resultImage" src="https://placehold.jp/80x60.png" alt="Result Image">
+        </div>
+    </div>
+
+</body>
+</html>

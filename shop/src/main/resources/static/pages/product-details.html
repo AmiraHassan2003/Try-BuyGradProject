@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details</title>
+    <link rel="stylesheet" href="../styles/product-details.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Sharky</h1>
+        <nav id="main-nav">
+            <a href="/pages/home.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="/pages/checkout.html">Checkout</a>
+            <a href="profile.html">Profile</a>
+            <button id="toggle-theme" title="Toggle Theme">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </nav>
+        <button id="menu-toggle" aria-label="Toggle Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="product-container">
+        <div class="product-image">
+            <img src="/assets/images/TEAM.jpg" alt="Product Image">
+        </div>
+
+        <div class="product-details">
+            <h1 class="title">Player Unknown Battle Ground (PUBG)</h1>
+            <div class="price">$1,199.00</div>
+
+            <p class="description">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Error quod repellendus atque et nemo voluptates, adipisci molestias nihil non, dicta qui quia vero cumque eos incidunt quisquam nam doloremque numquam?
+            </p>
+
+            <div class="options">
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" value="1" min="1" max="10">
+            </div>
+
+            <div class="product-btn">
+                <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+                <button class="add-to-cart" onclick="location.href='tryON.html'">TRY-ON</button>
+            </div>
+
+            <div class="extra-info">
+                <p><strong>Category:</strong> Smartphones</p>
+                <p><strong>Color:</strong> Space Black</p>
+                <p><strong>Availability:</strong> In Stock</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/product-detail.js"></script>
+</body>
+
+</html>
