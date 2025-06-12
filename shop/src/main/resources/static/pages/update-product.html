@@ -2,73 +2,145 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/update-product.css">
-    <title>Update Product</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles/update-product.css" />
+  <title>Update Product</title>
+  <script src="../js/holder.js" defer></script>
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
-        </div>
-    </header>
-
-    <form class="form-container" action="admin-home.html" method="post">
-        <!-- <h2>Go As Admin</h2>
-        <div class="image-upload" onclick="document.getElementById('product_img').click();">
-            <span class="clothing-icon">👕</span>
-            <img id="previewImage" alt="Product Image Preview" download>
-        </div>
-        <input type="file" id="product_img" name="product_img" accept="image/*" hidden>
-        <input type="text" name="product_name" id="product_name" placeholder="Name...">
-        <div class="product-nums">
-            <input type="text" name="product_price" id="product_price" placeholder="Price...">
-            <input type="number" name="product_quantity" id="product_quantity" placeholder="Quantity...">
-        </div>
-
-        <label class="category">
-            <span>Category</span>: &nbsp; <label for="men"><input type="radio" name="category" id="men"> Men &nbsp; </label>
-            <label for="women"><input type="radio" name="category" id="women"> Women </label>
-        </label>
-        <label for="product_description" id="desc"> Description:
-            <textarea name="product_description" id="product_description"
-                placeholder="Write more details about your product..."></textarea>
-        </label>
-        <div class="form-btns">
-            <input type="reset" value="Reset">
-            <input type="submit" value="Submet">
-        </div>  -->
-
-        <aside class="sidebar">
-            <div class="image-upload" onclick="document.getElementById('product_img').click();">
-                <span class="clothing-icon">👕</span>
-                <img id="previewImage" alt="Product Image Preview">
-            </div>
-            <input type="file" id="product_img" name="product_img" accept="image/*" hidden>
-        </aside>
-        <main class="content">
-            <input type="text" name="product_name" id="product_name" placeholder="Name...">
-            <input type="text" name="product_price" id="product_price" placeholder="Price...">
-            <input type="number" name="product_quantity" id="product_quantity" placeholder="Quantity...">
-            <label class="category">
-                <span>Category</span>: &nbsp; <label for="men"><input type="radio" name="category" id="men"> Men &nbsp;
-                </label>
-                <label for="women"><input type="radio" name="category" id="women"> Women </label>
-            </label>
-            <label for="product_description" id="desc"> Description:
-                <textarea name="product_description" id="product_description"
-                    placeholder="Write more details about your product..."></textarea>
-            </label>
-            <div class="form-btns">
-                <input type="reset" value="Reset">
-                <input type="submit" value="Submit">
-            </div>
-        </main>
-    </form>
+  <header>
+    <div class="container">
+      <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
     </div>
+  </header>
 
+  <form class="form-container">
+    <aside class="sidebar">
+      <div class="image-upload" onclick="document.getElementById('image1').click();">
+        <span class="clothing-icon">👕</span>
+        <img id="uploadedImage1" alt="Product Image 1 Preview">
+      </div>
+      <input type="file" id="image1" name="image1" accept="image/*" hidden>
+    </aside>
+
+    <aside class="sidebar">
+      <div class="image-upload" onclick="document.getElementById('image2').click();">
+        <span class="clothing-icon">👕</span>
+        <img id="uploadedImage2" alt="Product Image 2 Preview">
+      </div>
+      <input type="file" id="image2" name="image2" accept="image/*" hidden>
+    </aside>
+
+    <aside class="sidebar">
+      <div class="image-upload" onclick="document.getElementById('image3').click();">
+        <span class="clothing-icon">👕</span>
+        <img id="uploadedImage3" alt="Product Image 3 Preview">
+      </div>
+      <input type="file" id="image3" name="image3" accept="image/*" hidden>
+    </aside>
+
+    <main class="content">
+      <input type="text" id="pName" placeholder="Product Name..." />
+      <input type="text" id="mainprice" placeholder="Price..." />
+      <input type="number" id="stockQuantity" placeholder="Stock..." />
+      <input type="number" id="discount" placeholder="Discount..." />
+      <input type="number" id="QS" placeholder="Quantity Sold..." />
+
+      <label class="category">
+        <span>Category</span>:
+        <label><input type="radio" name="category" value="Men"> Men</label>
+        <label><input type="radio" name="category" value="Women"> Women</label>
+        <label><input type="radio" name="category" value="Kids"> Kids</label>
+      </label>
+
+      <label for="pDescription" id="desc">Description:
+        <textarea id="pDescription" placeholder="Write more details about your product..."></textarea>
+      </label>
+
+      <div class="form-btns">
+        <input type="reset" value="Reset" />
+        <input type="button" id="update" value="Update" />
+      </div>
+    </main>
+  </form>
+
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    function logout() {
+      setToken(null);
+      window.location.replace("http://localhost:8080/login.html");
+    }
+
+    $(document).ready(function () {
+      const id = getProductId();
+      console.log("Fetching product with ID:", id);
+
+      $.ajax({
+        type: "GET",
+        url: `http://localhost:8080/User/getproduct?id=${id}`,
+        headers: getAuthHeaders(),
+        success: function (data) {
+          console.log("Product data loaded:", data);
+          $('#pName').val(data.pName);
+          $(`input[name="category"][value="${data.category}"]`).prop('checked', true);
+          $('#mainprice').val(data.mainprice);
+          $('#discount').val(data.discount);
+          $('#stockQuantity').val(data.stockQuantity);
+          $('#QS').val(data.quantitySold);
+          $('#pDescription').val(data.pDescription);
+          $('#uploadedImage1').attr('src', "images/" + data.image1);
+          $('#uploadedImage2').attr('src', "images/" + data.image2);
+          $('#uploadedImage3').attr('src', "images/" + data.image3);
+          setimg1(data.image1);
+          setimg2(data.image2);
+          setimg3(data.image3);
+        },
+        error: function () {
+          window.location.replace("http://localhost:8080/login.html");
+        }
+      });
+
+      $('#update').click(function () {
+        console.log("Update button clicked");
+
+        const formData = {
+          id: getProductId(),
+          pName: $("#pName").val(),
+          pDescription: $("#pDescription").val(),
+          category: $('input[name="category"]:checked').val(),
+          mainprice: $("#mainprice").val(),
+          discount: $("#discount").val(),
+          stockQuantity: $("#stockQuantity").val(),
+          quantitySold: $("#QS").val(),
+          image1: $("#image1").val().replace(/C:\\fakepath\\/, '') || getimg1(),
+          image2: $("#image2").val().replace(/C:\\fakepath\\/, '') || getimg2(),
+          image3: $("#image3").val().replace(/C:\\fakepath\\/, '') || getimg3()
+        };
+
+        $.ajax({
+          url: "http://localhost:8080/Admin/EditProduct",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(formData),
+          headers: getAuthHeaders(),
+          success: function () {
+            setimg1(null);
+            setimg2(null);
+            setimg3(null);
+            window.location.href = "admin-home.html";
+            console.log("done");
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Update failed:", textStatus, errorThrown);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>
