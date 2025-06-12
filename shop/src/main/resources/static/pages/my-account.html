@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles/pprofile.css" />
+  <title>My Profile</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="js/holder.js" defer></script>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-container">
+      <h1 class="logo"><a href="./admin-home.html">.LOGO</a></h1>
+    </div>
+  </div>
+<img src="../images/"
+  <!-- Breadcrumb -->
+  <!-- <div class="all-title-box">
+    <div class="container">
+      <h2>My Account</h2>
+      <ul class="breadcrumb">
+        <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+        <li class="breadcrumb-item active">My Account</li>
+      </ul>
+    </div>
+  </div> -->
+
+  <!-- Main content -->
+  <div class="contain">
+    <aside class="sidebar">
+      <ul>
+        <li><strong>ACCOUNT</strong></li>
+        <li><a href="shopping-cart.html">Cart</a></li>
+        <li><a href="editprofile.html">Edit Profile</a></li>
+        <li><a href="../authontecation.html">Log Out</a></li>
+      </ul>
+    </aside>
+
+    <main class="main-content">
+      <!-- Profile -->
+      <div class="profile-box">
+        <img alt="Avatar" id="profile-image" src="" />
+        <div class="profile-info">
+          <p>Username: <span id="profile-username"></span></p>
+          <p>Email: <span id="profile-email"></span></p>
+          <p>Phone: <span id="profile-phone"></span></p>
+          <p>Fullname: <span id="profile-fullname"></span></p>
+        </div>
+      </div>
+
+      <!-- Addresses -->
+      <div class="address-section" id="address-section"></div>
+
+      <!-- Orders -->
+      <section class="orders-section">
+        <h3>Your orders</h3>
+        <div id="orders-container"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer placeholders -->
+  <div id="navPlaceholder"></div>
+  <div id="mainfooterplaceholder"></div>
+
+  <script>
+    $(function() {
+      const API = "http://localhost:8080";
+      const token = localStorage.getItem("token") || "";
+
+      function authHeaders() {
+        return { Authorization: `Bearer ${token}` }
+      }
+
+      // Load nav/footer
+      $("#navPlaceholder").load("Basics/nav.html");
+      $("#mainfooterplaceholder").load("Basics/mainFooter.html");
+
+      // Fetch profile
+      $.ajax({
+        url: `${API}/User/account`,
+        type: "GET",
+        headers: authHeaders(),
+        dataType: "json",
+        success: user => {
+          $("#profile-fullname").text(user.fullname);
+          $("#profile-username").text(user.username);
+          $("#profile-email").text(user.email);
+          $("#profile-phone").text(user.phone);
+          $("#profile-image").attr("src", user.picture);
+
+          const $addr = $("#address-section").empty();
+          const addrs = Array.isArray(user.addresses) ? user.addresses : user.address ? [user.address] : [];
+          if (addrs.length) {
+            addrs.forEach(a => {
+              $addr.append(`
+                <div class="address-box">
+                  📍 Address: <span class="address">${a}</span>
+                </div>`);
+            });
+          } else {
+            $addr.append(`<div class="address-box">📍 No address on file</div>`);
+          }
+        },
+        error: () => console.error("Failed to load user profile")
+      });
+
+      // Fetch orders
+      $.ajax({
+        url: `${API}/Car/orders`,
+        type: "GET",
+        headers: authHeaders(),
+        dataType: "json",
+        success: orders => {
+          const $orders = $("#orders-container").empty();
+          if (!orders.length) {
+            $orders.append("<p>No orders found</p>");
+            return;
+          }
+          orders.forEach(o => {
+            const productsHtml = o.ProductsOfCarDto.map(p => `
+              <div class="order-product">
+                <img src="../images/${p.image}" alt="${p.description}" />
+                <div>
+                  <p>${p.description}</p>
+                  <p>Qty: ${p.quantity}</p>
+                  <p>Price: ${p.productPrice}</p>
+                </div>
+              </div>
+            `).join("");
+
+            $orders.append(`
+              <div class="order">
+                <div>
+                  <strong>Order ID:</strong> ${o.id} 
+                  <span class="status">(${o.status})</span>
+                </div>
+                <div>Date: ${o.carDate}</div>
+                <div class="products">${productsHtml}</div>
+                <div class="payment">
+                  <strong>Payment</strong><br>
+                  Shipping fee: ${o.shippingCost}<br>
+                  Total paid: ${o.totalAmount}
+                </div>
+                <hr>
+              </div>
+            `);
+          });
+        },
+        error: () => console.error("Failed to load orders")
+      });
+    });
+  </script>
+</body>
+</html>
