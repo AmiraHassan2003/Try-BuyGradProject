@@ -1,64 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Details</title>
-    <link rel="stylesheet" href="../styles/product-details.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Details</title>
+  <link rel="stylesheet" href="../styles/product-details.css"/>
+  <link rel="stylesheet" href="../styles/comment.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="../js/holder.js" defer></script>
+   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-    <header>
-        <h1>Sharky</h1>
-        <nav id="main-nav">
-            <a href="/pages/home.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="/pages/checkout.html">Checkout</a>
-            <a href="profile.html">Profile</a>
-            <button id="toggle-theme" title="Toggle Theme">
-                <i class="fa-solid fa-sun"></i>
-            </button>
-        </nav>
-        <button id="menu-toggle" aria-label="Toggle Menu">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-    </header>
+<header>
+  <h1>Try & Buy</h1>
+  <nav id="main-nav">
+    <a href="/pages/home.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="/pages/checkout.html">Checkout</a>
+    <a href="my-account.html">Profile</a>
+    <button id="toggle-theme" title="Toggle Theme">
+      <i class="fa-solid fa-sun"></i>
+    </button>
+  </nav>
+  <button id="menu-toggle" aria-label="Toggle Menu">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+</header>
 
-    <div class="product-container">
-        <div class="product-image">
-            <img src="/assets/images/TEAM.jpg" alt="Product Image">
-        </div>
+<div class="product-container">
+  <div class="product-image">
+    <img src="/assets/images/TEAM.jpg" alt="Product Image">
+  </div>
 
-        <div class="product-details">
-            <h1 class="title">Player Unknown Battle Ground (PUBG)</h1>
-            <div class="price">$1,199.00</div>
+  <div class="product-details">
+    <h1 class="title">Player Unknown Battle Ground (PUBG)</h1>
+    <div class="price">$1,199.00</div>
 
-            <p class="description">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Error quod repellendus atque et nemo voluptates, adipisci molestias nihil non, dicta qui quia vero cumque eos incidunt quisquam nam doloremque numquam?
-            </p>
+    <p class="description">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit...
+    </p>
 
-            <div class="options">
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" value="1" min="1" max="10">
-            </div>
-
-            <div class="product-btn">
-                <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
-                <button class="add-to-cart" onclick="location.href='tryON.html'">TRY-ON</button>
-            </div>
-
-            <div class="extra-info">
-                <p><strong>Category:</strong> Smartphones</p>
-                <p><strong>Color:</strong> Space Black</p>
-                <p><strong>Availability:</strong> In Stock</p>
-            </div>
-        </div>
+    <div class="options">
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" value="1" min="1" max="10">
     </div>
 
-    <script src="/js/product-detail.js"></script>
-</body>
+    <div class="product-btn">
+      <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
+      <button class="add-to-cart" onclick="location.href='tryON.html'">TRY-ON</button>
+    </div>
 
+    <div class="extra-info">
+      <p><strong>Category:</strong> Smartphones</p>
+      <p><strong>Color:</strong> Space Black</p>
+      <p><strong>Availability:</strong> In Stock</p>
+    </div>
+<div >
+    <!-- Review Form -->
+    <div id="review-form">
+      <form id="submit-review">
+        <div class="flex space-x-2" id="star-input">
+          <span class="star text-3xl cursor-pointer text-gray-300" data-value="1">☆</span>
+          <span class="star text-3xl cursor-pointer text-gray-300" data-value="2">☆</span>
+          <span class="star text-3xl cursor-pointer text-gray-300" data-value="3">☆</span>
+          <span class="star text-3xl cursor-pointer text-gray-300" data-value="4">☆</span>
+          <span class="star text-3xl cursor-pointer text-gray-300" data-value="5">☆</span>
+        </div>
+        <input type="hidden" id="rating" value="0" />
+        <input type="hidden" id="productId" />
+        <button type="submit" class="bg-green-600 text-white px-2 py-2 rounded hover:bg-green-300">Submit Review</button>
+      </form>
+    </div>
+
+    <div id="reviews-list" class="mt-6"></div>
+
+    <!-- Comment Form -->
+    <form id="commentForm">
+      <textarea id="commentContent" placeholder="Write your comment..."></textarea>
+      <button type="submit" id="submitCommentBtn" disabled>Submit</button>
+    </form>
+
+    <div id="commentsSection"></div>
+  </div>
+</div>
+</div>
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+       <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const stars = document.querySelectorAll("#star-input .star");
+    const ratingInput = document.getElementById("rating");
+    const productId = window.location.pathname.split("/").pop(); // e.g., shop-detail/5
+    document.getElementById("productId").value = productId;
+
+    let userId ;
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("User not logged in");
+      return;
+    }
+
+    fetch("http://localhost:8080/User/id", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch user ID");
+        return res.json();
+      })
+      .then(data => {
+        userId = data.id;
+      })
+      .catch(err => alert(err.message));
+
+    function renderStars(rating) {
+      let stars = "";
+      for (let i = 1; i <= 5; i++) {
+        stars += i <= rating ? "★" : "☆";
+      }
+      return `<span class="text-yellow-500 text-lg">${stars}</span>`;
+    }
+
+    function updateStarUI(value) {
+      stars.forEach(star => {
+        const val = parseInt(star.getAttribute("data-value"));
+        star.textContent = val <= value ? "★" : "☆";
+        star.classList.toggle("text-yellow-500", val <= value);
+        star.classList.toggle("text-gray-300", val > value);
+      });
+    }
+
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        const value = parseInt(star.getAttribute("data-value"));
+        ratingInput.value = value;
+        updateStarUI(value);
+      });
+    });
+
+    document.getElementById("submit-review").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const rating = ratingInput.value;
+
+      if (rating == 0) {
+        alert("Please select a star rating.");
+        return;
+      }
+      var productId = getProductId();
+      console.log("productid ",productId);
+
+      fetch("http://localhost:8080/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": "Bearer " + token
+        },
+        body: `productId=${productId}&rating=${rating}`
+        
+      })
+        .then(res => {
+            console.log("product",userId,productId,rating);
+          if (!res.ok) throw new Error("Failed to submit review");
+          return res.json();
+        })
+        .then(() => {
+          alert("Review submitted!");
+          document.getElementById("submit-review").reset();
+          ratingInput.value = "0";
+          updateStarUI(0);
+          fetchReviews();
+          fetchAverageRating();
+        })
+        
+    });
+
+    function fetchReviews() {
+        var productId = getProductId();
+      fetch(`/api/product/${productId}`)
+        .then(res => res.json())
+        .then(data => {
+          const reviewList = document.getElementById("reviews-list");
+          reviewList.innerHTML = "";
+          data.forEach(review => {
+            const div = document.createElement("div");
+            div.classList.add("border-b", "pb-2");
+            div.innerHTML = `
+              ${renderStars(review.rating)}
+              <small class="text-gray-500">Posted on ${review.createdAt?.split("T")[0]}</small>
+            `;
+            reviewList.appendChild(div);
+          });
+        });
+    }
+
+    
+  });
+</script>
+
+              
+
+
+    <script>
+$(document).ready(function () {
+    let userId;
+
+    function getToken() {
+        return localStorage.getItem("token");
+    }
+
+    const token = getToken();
+
+    // Disable submit button initially
+    $("#submitCommentBtn").prop("disabled", true);
+
+    // Fetch user ID using JWT token
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/User/id",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        success: function (user) {
+            userId = user.id;
+            $("#submitCommentBtn").prop("disabled", false);
+            console.log("our id is ",userId);
+        },
+        error: function (xhr) {
+            alert("Failed to fetch user info: " + (xhr.responseText || xhr.statusText));
+        }
+    });
+
+    // Handle comment submission
+    $("#commentForm").submit(function (event) {
+        event.preventDefault();
+
+        const content = $("#commentContent").val().trim();
+        if (!content) {
+            alert("Comment cannot be empty.");
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/comments/add",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ userId: userId, content: content }),
+            success: function (data) {
+                $("#commentContent").val(""); // Clear textarea
+                const commentHtml = `
+                    <div>
+                        <strong>${escapeHtml(data.username)}</strong>:
+                        <p>${escapeHtml(data.content)}</p>
+                        <small>${new Date(data.createdAt).toLocaleString()}</small>
+                        <hr/>
+                    </div>
+                `;
+                $("#commentsSection").prepend(commentHtml);
+            },
+            error: function (xhr) {
+                alert("Error submitting comment: " + (xhr.responseText || xhr.statusText));
+            }
+        });
+    });
+
+    // Load existing comments
+    fetch("http://localhost:8080/comments/get")
+        .then(res => res.json())
+        .then(comments => {
+            const section = document.getElementById("commentsSection");
+            comments.forEach(comment => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+                    <strong>${escapeHtml(comment.username)}</strong>:
+                    <p>${escapeHtml(comment.content)}</p>
+                    <small>${new Date(comment.createdAt).toLocaleString()}</small>
+                    <hr/>
+                `;
+                section.appendChild(div);
+            });
+        })
+        .catch(error => {
+            alert("Failed to load comments: " + error.message);
+        });
+
+    // Sanitize HTML to prevent XSS
+    function escapeHtml(str) {
+        return str.replace(/[&<>"']/g, match => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;',
+            '"': '&quot;', "'": '&#039;'
+        })[match]);
+    }
+});
+</script>
+</body>
 </html>
