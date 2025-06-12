@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <script src="../js/holder.js" defer></script>
    <script src="https://cdn.tailwindcss.com"></script>
+
+   
 </head>
 
 <body>
@@ -33,30 +35,58 @@
     <img src="/assets/images/TEAM.jpg" alt="Product Image">
   </div>
 
-  <div class="product-details">
-    <h1 class="title">Player Unknown Battle Ground (PUBG)</h1>
-    <div class="price">$1,199.00</div>
+  <div class="product-details" id="dataproduct"></div>
+  <div id="dataproduct"></div>
 
-    <p class="description">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit...
-    </p>
+  <!-- Carousel Section -->
+  <!-- <div>
+    <div id="carousel-example-1">
+      <div class="carousel-inner" role="listbox" id="images1"></div>
 
-    <div class="options">
-      <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" value="1" min="1" max="10">
+      <a class="carousel-control-prev" role="button" data-slide="prev">
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" role="button" data-slide="next">
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <span class="sr-only">Next</span>
+      </a>
+
+      <ol id="images2"></ol>
     </div>
+  </div> -->
 
-    <div class="product-btn">
-      <button class="add-to-cart" id="add-to-cart">Add to Cart</button>
-      <button class="add-to-cart" onclick="location.href='tryON.html'">TRY-ON</button>
-    </div>
+  <!-- Size and Quantity -->
+  <ul>
+    <li>
+      <div class="form-group size-st">
+        <label class="size-label">Size</label>
+        <select id="basic" class="selectpicker show-tick form-control">
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+          <option value="3XL">3XL</option>
+          <option value="4XL">4XL</option>
+        </select>
+      </div>
+    </li>
+    <li>
+      <div class="form-group quantity-box">
+        <label for="quan" class="control-label">Quantity</label>
+        <input class="form-control" id="quan" value="1" min="1" max="20" type="number">
+      </div>
+    </li>
+  </ul>
 
-    <div class="extra-info">
-      <p><strong>Category:</strong> Smartphones</p>
-      <p><strong>Color:</strong> Space Black</p>
-      <p><strong>Availability:</strong> In Stock</p>
-    </div>
-<div >
+  <!-- Price and Cart -->
+  <div class="price-box-bar">
+    <div class="cart-and-bay-btn" id="but"></div>
+  </div>
+
+  <!-- Reviews and Comments -->
+  <div>
     <!-- Review Form -->
     <div id="review-form">
       <form id="submit-review">
@@ -84,7 +114,9 @@
     <div id="commentsSection"></div>
   </div>
 </div>
-</div>
+
+
+
 <!-- JS -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
        <script>
@@ -204,8 +236,8 @@
               
 
 
-    <script>
-$(document).ready(function () {
+<script>
+  $(document).ready(function () {
     let userId;
 
     function getToken() {
@@ -295,6 +327,83 @@ $(document).ready(function () {
         })[match]);
     }
 });
+</script>
+
+
+
+
+
+
+
+
+
+
+<script>
+  $(document).ready(function () {
+    const id = getProductId();
+    const url = `http://localhost:8080/User/getproduct?id=${id}`;
+
+    function renderProduct(data) {
+        const productDet = `
+            <h1 class="title">${data.pName}</h1>
+            <h5>${data.mainprice === data.price ? `<span>$${data.price}</span>` : `<del>$${data.mainprice}</del> <span>$${data.price}</span>`}</h5>
+            <div class="price">$${data.price}</div>
+            <p class="description">${data.pDescription}</p>
+            <div class="product-btn">
+                <button class="add-to-cart" data-id="${data.id}">Add to Cart</button>
+                <button class="add-to-cart" onclick="location.href='tryON.html'">TRY-ON</button>
+            </div>
+            <div class="extra-info">
+                <p><strong>Category:</strong> ${data.category}</p>
+                <p><strong>Availability:</strong> ${data.stockQuantity} In Stock</p>
+                <p><strong>Sold:</strong> ${data.quantitySold}</p>
+            </div>`;
+        $('#dataproduct').html(productDet);
+    }
+
+    function refreshProductInfo() {
+        $.ajax({
+            type: "GET",
+            url: url,
+            headers: getAuthHeaders(),
+            dataType: "json",
+            success: function (data) {
+                renderProduct(data);
+            },
+            error: function () {
+                console.error("Failed to fetch product data");
+            }
+        });
+    }
+
+    // Initial load
+    refreshProductInfo();
+
+    // Add to cart handler
+    $(document).on("click", ".add-to-cart", function () {
+        const productId = id;
+        const Q = document.getElementById("quan").value;
+        const size = document.getElementById("basic").value;
+
+        $.ajax({
+            url: `http://localhost:8080/Car/add?productId=${productId}&quantity=${Q}&size=${size}`,
+            type: "POST",
+            headers: getAuthHeaders(),
+            success: function (ProductTocart) {
+                console.log("Product added to cart:", ProductTocart);
+                alert("Added to cart successfully!");
+                refreshProductInfo(); // 🔁 Refresh availability and sold
+            },
+            error: function (xhr, status, error) {
+                console.error("Add to cart error:", error);
+                alert("Failed to add to cart.");
+            }
+        });
+    });
+});
+
+                
+                
 </script>
 </body>
 </html>
